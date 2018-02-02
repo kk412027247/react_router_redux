@@ -13,9 +13,11 @@ const middleware = [
   routerMiddleware(history)
 ]
 
+console.log(typeof window.devToolsExtension)
+
 if (process.env.NODE_ENV === 'development') {
   const devToolsExtension = window.devToolsExtension
-
+  middleware.push(require('redux-immutable-state-invariant').default());
   if (typeof devToolsExtension === 'function') {
     enhancers.push(devToolsExtension())
   }
@@ -24,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 const composedEnhancers = compose(
   applyMiddleware(...middleware),
   ...enhancers
-)
+);
 
 export default createStore(
   rootReducer,
